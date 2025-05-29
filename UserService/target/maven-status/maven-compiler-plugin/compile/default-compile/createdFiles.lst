@@ -1,0 +1,9 @@
+com\appsdeveloperMl\estore\data\UserRepository.class
+com\appsdeveloperMl\estore\model\User.class
+com\appsdeveloperMl\estore\service\EmailVerificationService.class
+com\appsdeveloperMl\estore\data\UserRepositoryImpl.class
+com\appsdeveloperMl\estore\service\UserServiceImpl.class
+com\appsdeveloperMl\estore\service\EmailVerificationServiceImpl.class
+com\appsdeveloperMl\estore\service\UserService.class
+com\appsdeveloperMl\estore\service\EmailNotificationServiceException.class
+com\appsdeveloperMl\estore\service\UserServiceException.class

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.appsdeveloperMl.estore.service</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.appsdeveloperMl.estore.service;
+
+import com.appsdeveloperMl.estore.data.UserRepository;
+import com.appsdeveloperMl.estore.data.UserRepositoryImpl;
+import com.appsdeveloperMl.estore.model.User;
+
+import java.util.UUID;
+
+public class UserServiceImpl implements UserService {
+
+    UserRepository userRepository;
+    EmailVerificationService emailVerificationService;
+
+
+<span class="fc" id="L15">    public UserServiceImpl(UserRepository userRepository, EmailVerificationService emailVerificationService) {</span>
+<span class="fc" id="L16">        this.userRepository = userRepository;</span>
+<span class="fc" id="L17">        this.emailVerificationService = emailVerificationService;</span>
+<span class="fc" id="L18">    }</span>
+
+    @Override
+    public User createUser(String firstName, String lastName, String email, String password, String repeatPassword) {
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">        if (firstName == null || firstName.trim().isEmpty()) {</span>
+<span class="fc" id="L23">            throw new IllegalArgumentException(&quot;User's first name is empty&quot;);</span>
+
+        }
+<span class="pc bpc" id="L26" title="1 of 4 branches missed.">        if (lastName == null || lastName.trim().isEmpty()) {</span>
+<span class="fc" id="L27">            throw new IllegalArgumentException(&quot;User's last name is empty&quot;);</span>
+
+        }
+<span class="fc" id="L30">        int isLess = 7;</span>
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if (password == null || password.length() &lt; isLess) {</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;User's password is less than 7&quot;);</span>
+        }
+
+<span class="fc" id="L35">        User user = new User(firstName, lastName, email, UUID.randomUUID().toString());</span>
+
+        boolean isUserCreated;
+
+        try {
+<span class="fc" id="L40">            isUserCreated = userRepository.save(user);</span>
+<span class="fc" id="L41">        } catch (RuntimeException ex){</span>
+<span class="fc" id="L42">            throw new UserServiceException(ex.getMessage());</span>
+<span class="fc" id="L43">        }</span>
+
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if(!isUserCreated) throw new UserServiceException(&quot;Could not create user&quot;);</span>
+
+        try {
+<span class="fc" id="L48">            emailVerificationService.scheduleEmailConfirmation(user);</span>
+<span class="fc" id="L49">        } catch (RuntimeException e) {</span>
+<span class="fc" id="L50">            throw new UserServiceException(e.getMessage());</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">        return user;</span>
+    }
+
+    public void demoMethod(){
+<span class="nc" id="L56">        System.out.println(&quot;Demo Method&quot;);</span>
+<span class="nc" id="L57">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
